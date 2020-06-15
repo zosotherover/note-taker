@@ -1,34 +1,22 @@
-//Require express, router, and Notebook class:
+//require express (router), and path:
+
 const router = require("express").Router();
-const notebook = require("../db/Notebook");
+const path = require("path");
 
-//GET route:
-
-router.get("/notes", function (req, res) {
-  notebook
-    .getNotes()
-    .then((notes) => res.json(notes))
-    .catch((err) => res.status(500).json(err));
+// GET notes route:
+// use the sendFile() directory, filename
+router.get("/", (req, res) => {
+  const filePath = path.join(__dirname, "..", "public", "html", "notes.html");
+  res.sendFile(filePath);
 });
 
-//POST route:
-
-router.post("/notes", function (req, res) {
-  notebook
-    .addNotes(req.body)
-    .then((note) => res.json(note))
-    .catch((err) => res.status(500).json(err));
+// GET * route:
+// use the sendFile() directory, filename
+router.get("*", (req, res) => {
+  const filePath = path.join(__dirname, "..", "public", "html", "index.html");
+  res.sendFile(filePath);
 });
 
-//DELETE route:
-
-router.delete("/notes/:id", function (req, res) {
-  notebook
-    .deleteNotes(req.params.id)
-    .then(() => res.json({ ok: true }))
-    .catch((err) => res.status(500).json(err));
-});
-
-//exposrt the router:
+//export the Router:
 
 module.exports = router;

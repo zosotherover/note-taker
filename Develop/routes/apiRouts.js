@@ -1,13 +1,34 @@
 //require express
 //require the class file so you can use the functions that you created
 
-//GET request for /api/notes
-// call the getNotes() from the class that your required
-// res.json(note)
+const router = require("express").Router();
+const notebook = require("../db/Notebook");
 
-//POST request for /api/notes
-// call the addNotes() from the class that your required
-// res.json(note)
+// GET request for notes:
 
-//DELETE request for /api/notes/:id
-//call the deleteNote() function
+router.get("/notes", function (req, res) {
+  notebook
+    .getNotes()
+    .then((notes) => res.json(notes))
+    .catch((err) => res.status(500).json(err));
+});
+
+// POST request for notes:
+
+router.post("/notes", function (req, res) {
+  notebook
+    .addNotes(req.body)
+    .then((note) => res.json(note))
+    .catch((err) => res.status(500).json(err));
+});
+
+//DELETE request for notes:
+
+router.delete("/notes/:id", function (req, res) {
+  notebook
+    .deleteNotes(req.params.id)
+    .then(() => res.json({ ok: true }))
+    .catch((err) => res.status(500).json(err));
+});
+
+module.exports = router;
