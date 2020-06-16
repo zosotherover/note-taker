@@ -4,6 +4,8 @@ const router = require("express").Router();
 const express = require("express");
 const path = require("path");
 
+const app = express();
+
 // GET notes route:
 // use the sendFile() directory, filename
 router.get("/", (req, res) => {
